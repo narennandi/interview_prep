@@ -247,3 +247,94 @@ def connectSticks(A):
 
     return cost
 
+
+def numIdenticalPairs(self, nums: List[int]) -> int:
+    """
+    Given an array of integers nums.
+    A pair (i,j) is called good if nums[i] == nums[j] and i < j.
+    Return the number of good pairs.
+    """
+    #brute force
+    # res = 0
+    # for i in range(len(nums)):
+    #     for j in range(len(nums)):
+    #         if i >= j:
+    #             continue
+
+    #         if nums[i] == nums[j]:
+    #             res += 1
+    # return res
+    #with memoization
+    res = 0
+    memo = {}
+    
+    for n in nums:
+        
+        if n not in memo:
+            memo[n] = 1
+        
+        else:
+            # count number of pairs based on duplicate values
+            if memo[n] == 1:
+                res += 1
+            else:
+                res += memo[n]
+                
+            memo[n] += 1
+            
+    return res
+
+
+def numJewelsInStones(self, J: str, S: str) -> int:
+    #brute force
+    """
+    You're given strings J representing the types of stones that are jewels, and S representing the stones you have. 
+    Each character in S is a type of stone you have.  You want to know how many of the stones you have are also jewels.
+    The letters in J are guaranteed distinct, and all characters in J and S are letters. 
+    Letters are case sensitive, so "a" is considered a different type of stone from "A".
+
+    Input: J = "aA", S = "aAAbbbb"
+    Output: 3
+    """
+    res = 0
+    for stone in S:
+        if stone in J:
+            res += 1
+    return res
+    
+    #Optimized by using a Hash set
+    res = 0
+    jewel_set = set(J)
+    for stone in S:
+        if stone in jewel_set:
+            res += 1 
+    return res
+
+
+def twoSum(self, nums: List[int], target: int) -> List[int]:
+    """
+    Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+    You may assume that each input would have exactly one solution, and you may not use the same element twice.
+    You can return the answer in any order.
+    """
+    # res = []
+    # for i in range(len(nums)):
+    #     for j in range(len(nums)):
+    #         if i == j:
+    #             continue
+
+    #         if nums[i] + nums[j] == target:
+    #             res.append(i)
+    #             res.append(j)
+    #             return res
+        
+        memo = {}
+        for index, num in enumerate(nums):
+            #if target - num is already in memo, then return current index and the num's index
+            n = target - num
+
+            if num not in memo:
+                memo[n] = index
+                
+            else:
+                return [index, memo[num]]
