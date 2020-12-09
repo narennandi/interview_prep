@@ -338,3 +338,42 @@ def twoSum(self, nums: List[int], target: int) -> List[int]:
                 
             else:
                 return [index, memo[num]]
+
+
+def isAlienSorted(self, words: List[str], order: str) -> bool:
+    """
+    In an alien language, surprisingly they also use english lowercase letters, but possibly in a different order. 
+    The order of the alphabet is some permutation of lowercase letters.
+    Given a sequence of words written in the alien language, and the order of the alphabet, 
+    return true if and only if the given words are sorted lexicographicaly in this alien language.
+
+    Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+    Output: true
+    Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.    
+
+    Complexity Analysis
+    Time Complexity: O(C), where C is the total content of words.
+    Space Complexity: O(1)
+    """
+    #create a dict where the key is the letter, value is index of the letter
+    order_map = {c:i for i, c in enumerate(order)}
+    
+    #loop through the words
+    for i in range(len(words) - 1):
+        word1 = words[i]
+        word2 = words[i+1]
+        
+        #Find the first diff between word1[l] != word2[l]
+        for letter in range(min(len(word1), len(word2))):
+            if word1[letter] != word2[letter]:
+                if order_map[word1[letter]] > order_map[word2[letter]]:
+                    return False
+                break
+            
+        else:
+            if len(word1) > len(word2):
+                return False
+
+    return True
+
+
