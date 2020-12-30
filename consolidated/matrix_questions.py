@@ -156,3 +156,86 @@ class Solution:
         
         return False
 
+# 64. Minimum Path Sum
+class Solution:
+    """
+    Approach 1: Brute Force
+    The Brute Force approach involves recursion. For each element, we consider two paths, 
+    rightwards and downwards and find the minimum sum out of those two. 
+    It specifies whether we need to take a right step or downward step to minimize the sum.
+
+    Time complexity : O(2^{m+n})
+    For every move, we have atmost 2 options.
+    Space complexity : O(m+n). Recursion of depth m+n.
+    """
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        return self.calculate(grid, 0 ,0)
+        
+    def calculate(self, grid, i, j):
+        if i == len(grid) or j == len(grid[0]):
+            return float('inf')
+        
+        if i == len(grid) - 1 and j == len(grid[0]) - 1:
+            return grid[i][j]
+        
+        return grid[i][j] + min(self.calculate(grid, i+1, j), self.calculate(grid, i, j + 1))
+    
+    """
+    Approach 2: Dynamic Programming 2D Algorithm
+
+    We use an extra matrix dpdp of the same size as the original matrix. 
+    In this matrix, dp(i, j)dp(i,j) represents the minimum sum of the path from the index (i, j)(i,j) to the bottom rightmost element. 
+    We start by initializing the bottom rightmost element of dpdp as the last element of the given matrix. 
+    Then for each element starting from the bottom right, we traverse backwards and fill in the matrix with the required minimum sums. 
+    Now, we need to note that at every element, we can move either rightwards or downwards. 
+    Therefore, for filling in the minimum sum, we use the equation:
+    dp(i, j)= grid[i][j] + min(dp(i+1,j),dp(i,j+1))
+    
+    Time complexity : O(mn) We traverse the entire matrix once.
+    Space complexity : O(mn) Another matrix of the same size is used.
+    """
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        dp = [[0 for i in range(len(grid[0]))] for j in range(len(grid))]
+        
+        for i in range(len(grid)-1, -1, -1):
+            for j in range(len(grid[0])-1, -1, -1):
+                
+                if i == len(grid) - 1 and j != len(grid[0]) - 1:
+                    dp[i][j] = grid[i][j] + dp[i][j+1]
+                    
+                elif i!= len(grid) - 1 and j == len(grid[0]) - 1:
+                    dp[i][j] = grid[i][j] + dp[i+1][j]
+                    
+                elif i!= len(grid) -1 and j!= len(grid[0]) - 1:
+                    dp[i][j] = grid[i][j] + min(dp[i+1][j], dp[i][j+1])
+                
+                else:
+                    dp[i][j] = grid[i][j]
+                    
+        return dp[0][0]
+    
+    """
+    Approach 3: Dynamic Programming (Without Extra Space)
+    This approach is same as Approach 2, with a slight difference. 
+    Instead of using another dpdp matrix. We can store the minimum sums in the original matrix itself, 
+    since we need not retain the original matrix here. Thus, the governing equation now becomes:
+    grid(i, j)= grid[i][j] + min(grid[i+1][j], grid[i][j+1])
+    
+    Time complexity : O(mn)O(mn). We traverse the entire matrix once.
+    Space complexity : O(1)O(1). No extra space is used.
+    """
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        for i in range(len(grid) -1, -1, -1):
+            for j in range(len(grid[0])-1,-1,-1):
+                
+                if i == len(grid) - 1 and j != len(grid[0]) -1:
+                    grid[i][j] = grid[i][j] + grid[i][j+1]
+                    
+                elif i != len(grid) - 1 and j == len(grid[0]) - 1:
+                    grid[i][j] = grid[i][j] + grid[i+1][j]
+                    
+                elif i != len(grid) - 1 and j != len(grid[0]) - 1:
+                    grid[i][j] = grid[i][j] + min(grid[i+1][j], grid[i][j+1])
+        
+        return grid[0][0]
+

@@ -376,4 +376,88 @@ def isAlienSorted(self, words: List[str], order: str) -> bool:
 
     return True
 
+def isHappy(self, n: int) -> bool:
+    """
+    Write an algorithm to determine if a number n is "happy".
+    A happy number is a number defined by the following process: Starting with any positive integer, 
+    replace the number by the sum of the 
+    squares of its digits, 
+    and repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. 
+    Those numbers for which this process ends in 1 are happy numbers.
 
+    Return True if n is a happy number, and False if not.
+    """
+    def get_next(n):
+        res = 0
+        while n > 0:
+            n, digits = divmod(n, 10)
+            res += digits ** 2
+        return res
+    
+    # Approach 1: Detect Cycles with a HashSet
+    # O(logn)
+    seen = set()
+    while n != 1 and n not in seen:
+        seen.add(n)
+        n = get_next(n)
+    return n == 1
+
+    # Approach 2: Floyd's Cycle-Finding Algorithm
+    # O(logn)
+    slow_runner = n
+    fast_runner = get_next(n)
+    while fast_runner != 1 and slow_runner != fast_runner:
+        slow_runner = get_next(slow_runner)
+        fast_runner = get_next(get_next(fast_runner))
+    return fast_runner == 1
+
+
+def isValid(self, s: str) -> bool:
+    """
+    Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+    An input string is valid if:
+        Open brackets must be closed by the same type of brackets.
+        Open brackets must be closed in the correct order.
+    """
+    stack = []
+    
+    mapping = {
+        ")":"(",
+        "}":"{",
+        "]":"["
+    }
+    
+    for char in s:
+        if char not in mapping:
+            stack.append(char)
+        
+        else:
+            top_element = stack.pop() if stack else "#"
+            
+            if mapping[char] != top_element:
+                return False
+            
+    return not stack
+
+def reverse(self, x: int) -> int:
+    """
+    Given a 32-bit signed integer, reverse digits of an integer.
+    """
+    res = 0
+    remains = abs(x)
+    sign = -1 if x < 0 else 1 
+    
+    while True:
+        digit = remains % 10
+        res = (res * 10) + digit
+        remains = remains // 10
+        if remains == 0:
+            break
+            
+    res *= sign
+    
+    if abs(res) > 0x7FFFFFFF:
+        return 0
+    else:
+        return res
+        
