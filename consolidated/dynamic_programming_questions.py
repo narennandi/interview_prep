@@ -373,3 +373,80 @@ class NumArray:
 # Your NumArray object will be instantiated and called as such:
 # obj = NumArray(nums)
 # param_1 = obj.sumRange(i,j)
+
+# The goal is to implement `get_numbers` so that it returns all numbers
+# of length N that can be created from the path a knight in chess would make in
+# N moves on a phone dial pad, starting at position 0.
+
+#recursion + memoization
+def get_sequence(number_of_hops, start_position, cache, sequence=None):
+    if sequence is None:
+        sequence = [start_position]
+
+    if number_of_hops == 0:
+        yield sequence
+        return
+
+    if ((start_position, number_of_hops)) in cache:
+        yield cache[(start_position, number_of_hops)]
+        return
+
+    for neighbor in neighbors(start_position):
+        yield from get_sequence(number_of_hops - 1, neighbor, cache, sequence + [neighbor])
+    cache[(start_position, number_of_hops)] = sequence + [neighbor]
+
+def get_nums(n):
+    if n <= 0:
+        return []
+
+    start_position = 0
+    results = []
+    cache = {}
+    for sequence in get_sequence(n, start_position, cache):
+        results.append(sequence)
+    return results
+
+# The goal is to implement `get_sequence_count` so that it returns count of 
+# distinct sequeunces that can be created from the path a knight in chess would make in
+# N moves on a phone dial pad, starting at position 0.
+
+def neighbors(k):
+    d = {
+        0: [4, 6],
+        1: [8, 6],
+        2: [7, 9],
+        3: [4, 8],
+        4: [0, 3, 9],
+        5: [],
+        6: [7, 0, 1],
+        7: [2 ,6],
+        8: [1, 3],
+        9: [2 ,4],
+    }
+    return d[k]
+
+def get_sequence_count(start_position, number_of_hops, cache, sequence = None):
+    if sequence is None:
+        sequence = [start_position]
+    
+    if number_of_hops == 0:
+        yield sequence
+        return
+
+    if ((start_position, number_of_hops)) in cache:
+        return cache[(start_position, number_of_hops)]
+    
+    for neighbor in neighbors(start_position):
+        yield from get_sequence_count(neighbor, number_of_hops - 1, cache, sequence + [neighbor])
+    cache[(start_position, number_of_hops)] = sequence + [neighbor]
+
+def get_nums_memo(n):
+    if n <= 0:
+        return []
+    
+    cache = {}
+    start_position = 0
+    count = 0
+    for sequence in get_sequence_count(start_position, n, cache):
+        count += 1
+    return count

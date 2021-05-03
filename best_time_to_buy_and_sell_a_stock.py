@@ -22,13 +22,13 @@ obtained so far respectively.
 """
 def maxProfit(prices) :
     minSoFar = float('inf')
-    maxProfit = 0
+    maxprofit = 0
 
     for i in range(len(prices)):
         minSoFar = min(prices[i], minSoFar)
-        maxProfit = max(prices[i] - minSoFar, maxProfit)
+        maxprofit = max(prices[i] - minSoFar, maxprofit)
     
-    return maxProfit
+    return maxprofit
 
 if __name__ == '__main__':
     prices = [7,1,5,3,6,4]

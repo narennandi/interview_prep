@@ -337,8 +337,27 @@ def twoSum(self, nums: List[int], target: int) -> List[int]:
                 memo[n] = index
                 
             else:
-                return [index, memo[num]]
+                return [memo[num], index]
 
+# 167. Two Sum II - Input array is sorted
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        left = 0
+        right = len(numbers) - 1
+        
+        while left < right:
+            res = numbers[left] + numbers[right]
+            
+            if res == target:
+                return [left+1, right+1]
+            
+            elif res < target:
+                left += 1
+            
+            else:
+                right -= 1
+        
+        return []
 
 def isAlienSorted(self, words: List[str], order: str) -> bool:
     """
@@ -460,4 +479,112 @@ def reverse(self, x: int) -> int:
         return 0
     else:
         return res
+
+# 811. Subdomain Visit Count
+class Solution:
+    """
+    A website domain like "discuss.leetcode.com" consists of various subdomains. 
+    At the top level, we have "com", at the next level, we have "leetcode.com", and at the lowest level, "discuss.leetcode.com". When we visit a domain like "discuss.leetcode.com", 
+    we will also visit the parent domains "leetcode.com" and "com" implicitly.
+    Example 1:
+    Input: 
+    ["9001 discuss.leetcode.com"]
+    Output: 
+    ["9001 discuss.leetcode.com", "9001 leetcode.com", "9001 com"]
+    """
+    def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
+        ans = collections.Counter()
+        for domain in cpdomains:
+            count, domain = domain.split()
+            count = int(count)
+            frags = domain.split('.')
+            
+            for i in range(len(frags)):
+                ans[".".join(frags[i:])] += count
         
+        return ["{} {}".format(ct, dom) for dom, ct in ans.items()]
+
+# 14. Longest Common Prefix
+class Solution:
+    """
+    Write a function to find the longest common prefix string amongst an 
+    array of strings.
+    If there is no common prefix, return an empty string ""
+    Input: strs = ["flower","flow","flight"]
+    Output: "fl"
+    """
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        
+        if not strs:
+            return ""
+        
+        shortest = min(strs, key = len)
+        
+        for i, ch in enumerate(shortest):
+            for other in strs:
+                
+                if ch != other[i]:
+                    return shortest[:i]
+        
+        return shortest
+
+class Solution:
+    """
+    Write a program that outputs the string representation of numbers from 1 to n.
+    But for multiples of three it should output “Fizz” instead of the number and 
+    for the multiples of five output “Buzz”. For numbers which are multiples of 
+    both three and five output “FizzBuzz”.
+    n = 15
+    ["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz","11","Fizz","13","14","FizzBuzz"]
+    """
+    def fizzBuzz(self, n: int) -> List[str]:
+        res = []
+        for i in range(1, n+1):
+            if i % 3 == 0 and i % 5 == 0:
+                res.append("FizzBuzz")
+            elif i % 3 == 0:
+                res.append("Fizz")
+            elif i % 5 == 0:
+                res.append("Buzz")
+            else:
+                res.append(str(i))
+                
+        return res
+
+# 283. Move Zeroes
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Given an array nums, write a function to move all 0's to the end of it 
+        while maintaining the relative order of the non-zero elements.
+
+        Example:
+
+        Input: [0,1,0,3,12]
+        Output: [1,3,12,0,0]
+        Do not return anything, modify nums in-place instead.
+        """
+        index = 0
+        for i in range(len(nums)):
+            if nums[i] != 0:
+                nums[index] = nums[i]
+                index += 1
+                
+        for i in range(index, len(nums)):
+            nums[i] = 0
+
+
+class Solution:
+    # 1480. Running Sum of 1d Array
+    """
+    Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
+    Return the running sum of nums.
+    """
+    def runningSum(self, nums: List[int]) -> List[int]:
+
+        i = 1        
+        while i < len(nums):
+            nums[i] += nums[i-1]
+            i += 1
+
+        return nums

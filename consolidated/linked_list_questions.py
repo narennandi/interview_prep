@@ -101,3 +101,60 @@ class Solution:
         
         return prev
         
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    """
+    83. Remove Duplicates from Sorted List
+    Given the head of a sorted linked list, 
+    delete all duplicates such that each element appears only once. 
+    Return the linked list sorted as well.
+    """
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        first = head
+        second = head.next if head else None
+        
+        while second:
+            if first.val == second.val:
+                second = second.next
+                first.next = second
+            else:
+                first = second
+                second = second.next
+            
+        return head
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    """
+    203. Remove Linked List Elements
+    Remove all elements from a linked list of integers that have value val.
+    Input:  1->2->6->3->4->5->6, val = 6
+    Output: 1->2->3->4->5
+    
+    Find the node in the linked list whose val equals the target val
+    and make the current node next val point to the node after that
+    """
+    def removeElements(self, head: ListNode, val: int) -> ListNode:
+        
+        dummyhead = ListNode(0)
+        dummyhead.next = head
+        
+        current_node = dummyhead
+        while current_node.next != None:
+            
+            if current_node.next.val == val:
+                current_node.next = current_node.next.next
+            else:
+                current_node = current_node.next
+            
+        return dummyhead.next
+        

@@ -198,3 +198,102 @@ class Solution:
                 hi -= 1
                 
         return ans + [lo]
+
+
+# 125. Valid Palindrome
+class Solution:
+    """
+    Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+    Note: For the purpose of this problem, we define empty string as valid palindrome.
+
+    Example 1:
+
+    Input: "A man, a plan, a canal: Panama"
+    Output: true
+    """
+    def isPalindrome(self, s: str) -> bool:
+        new_str = ""
+        for i in range(len(s)):
+            if s[i].isalnum():
+                new_str += s[i].lower()
+        
+        left = 0
+        right = len(new_str) - 1            
+
+        while left < right:
+            if new_str[left] != new_str[right]:
+                return False
+
+            left += 1
+            right -= 1
+        
+        return True
+
+# 680. Valid Palindrome II
+class Solution:
+    """
+    Given a non-empty string s, you may delete at most one character. Judge whether you can make it a palindrome.
+
+    Example 1:
+    Input: "aba"
+    Output: True
+    """
+    def validPalindrome(self, s: str) -> bool:
+#        # brute force (Failed) TLE
+#         for i in range(len(s)):
+#             temp = s[:i] + s[i+1:]
+            
+#             if temp == temp[::-1]:
+#                 return True 
+#             else:
+#                 return False
+        
+        #two pointers
+        #O(N)
+        def isPalindrome(s, left, right):
+            while left < right:
+                if s[left] != s[right]:
+                    return False
+                
+                left += 1
+                right -= 1
+            return True
+        
+        left = 0
+        right = len(s) - 1
+        
+        while left < right:
+            if s[left] != s[right]:
+                return isPalindrome(s, left + 1, right) or isPalindrome(s, left, right - 1)
+            
+            left += 1
+            right -= 1
+        
+        return True
+
+# 392. Is Subsequence
+class Solution:
+    """
+    Given two strings s and t, check if s is a subsequence of t.
+    A subsequence of a string is a new string that is formed from the original string by deleting 
+    some (can be none) of the characters without disturbing the relative positions 
+    of the remaining characters. (i.e., "ace" is a subsequence of "abcde" while "aec" is not).
+    Example 1:
+
+    Input: s = "abc", t = "ahbgdc"
+    Output: true
+    """
+    def isSubsequence(self, s: str, t: str) -> bool:
+        s_len = len(s)
+        t_len = len(t)
+        
+        s_ptr = 0
+        t_ptr = 0
+        
+        while s_ptr < s_len and t_ptr < t_len:
+            if s[s_ptr] == t[t_ptr]:
+                s_ptr += 1
+            t_ptr += 1
+            
+        return s_ptr == s_len
+
